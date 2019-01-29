@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <style type="text/css">
+        .menuler {
+            width: 100px;
+            height: 100px;
+            background-color: burlywood;
+            float: right;
+            text-align:center;
+        }
+        .sagdan5pxbosluk{
+            margin-right:5px;
+        }
+        body{
+            background-color:red;
+        }
+        a:hover{
+            background-color:lightgray;
+            color:deepskyblue;
+        }
+    </style>
+    @RenderSection("style", false)
+</head>
+<body>
+    <div style="width:100%; height:100px; background-color:darkslateblue">
+        <div class="menuler"> <a href="@Url.Action("Iletisim")">İletisim</a></div>
+        <div  class="menuler sagdan5pxbosluk"> <a href="@Url.Action("Hakkimizda")">Hakkımızda</a> </div>
+        <div  class="menuler sagdan5pxbosluk"><a href="@Url.Action("Index")">Anasayfa</a> </div>
+        Banner
+    </div>
+    <div>
+        @Html.Partial("~/Views/Home/_partialVitrin.cshtml")
+        @RenderBody()
+    </div>
+ 
+    <div style="width:100%; height:100px; background-color:darkslateblue">
+      @Html.Partial("_partialAltBilgi")
+    </div>
+</body>
+</html>
