@@ -17,7 +17,10 @@ namespace Admin.Web.UI.Controllers
         {
             return PartialView("Partials/_HeaderPartial");
         }
-
+        public PartialViewResult ModalPartial()
+        {
+            return PartialView("Partials/_ModalPartial");
+        }
 
     }
 }
