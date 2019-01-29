@@ -23,7 +23,7 @@ namespace Admin.Models.Entities
 
         public int? SupCategoryId { get; set; }
 
-        [ForeignKey("SupCategory")]
+        [ForeignKey("SupCategoryId")]
         public virtual Category SupCategory{ get; set; }
         public virtual ICollection<Category> Categories { get; set; } = new HashSet<Category>();
 
