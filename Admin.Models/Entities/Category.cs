@@ -12,14 +12,15 @@ namespace Admin.Models.Entities
 {[Table("Categories")]
    public class Category:BaseEntity<int>
     {
-
+      
         [StringLength(100,ErrorMessage ="Kategori adı 3 ile  100 arasında karakter olabilir",MinimumLength =3)]
         [DisplayName("Kategori Adı")]
         [Required]
         public string CategoryName { get; set; }
         [DisplayName("KDV Oranı")]
-        [Range(0, 1)]
-        public decimal TaxRate { get; set; } = 0;
+        [Range(0, 99)]
+        public decimal TaxRate { get; set; }
+       
         [DisplayName("Üst Kategori Adı")]
         public int? SupCategoryId { get; set; }
 

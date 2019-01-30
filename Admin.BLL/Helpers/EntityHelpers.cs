@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Admin.BLL.Helpers
 {
-    class EntityHelpers
+   public class EntityHelpers
     {
         public static string ValidationMessage(DbEntityValidationException ex)
         {
