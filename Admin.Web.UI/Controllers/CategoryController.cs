@@ -22,5 +22,27 @@ namespace Admin.Web.UI.Controllers
             ViewBag.CategoryList = GetCategorySelectList();
             return View();
         }
+
+        [HttpPost]
+        public ActionResult Add(Category model)
+        {
+
+            try
+            {
+                model.TaxRate /= 100;
+                if (model.SupCategoryId == 0) model.SupCategoryId = null;
+                new CategoryRepo().Insert(model);
+                return RedirectToAction("Add");
+            }
+            catch (Exception ex)
+            {
+                //todo: hata sayfası yaz
+                return RedirectToAction("Add");
+            }
+
+
+
+            return View();
+        }
     }
 }
