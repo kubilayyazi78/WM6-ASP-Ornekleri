@@ -24,7 +24,6 @@ namespace Admin.Models.Entities
         [Required]
         public string ProductName { get; set; }
         [DisplayName("Ürün Adı")]
-
         public ProductTypes ProductTypes  { get; set; }
         [DisplayName("Satış Fiyatı")]
         public decimal SalesPrice { get; set; }
@@ -33,11 +32,11 @@ namespace Admin.Models.Entities
         [DisplayName("Stok Miktarı")]
         [Range(0,9999)]
         public double UnitInStock { get; set; }
-
+        [DisplayName("Fiyat Güncellenme Tarihi")]
         public DateTime LastPriceUpdateDate { get; set; }
-
+        [DisplayName("Kategorisi")]
         public int CategoryId { get; set; }
-
+        [DisplayName("Perakende Ürünü")]
         public Guid? SupProductId { get; set; }
         [StringLength(20)]
         [Required]
