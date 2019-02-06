@@ -135,5 +135,11 @@ namespace Admin.Web.UI.Controllers
             authManager.SignOut();
             return RedirectToAction("Index");
         }
+
+        public ActionResult UserProfile()
+        {
+            return View();
+        }
+
     }
 }
