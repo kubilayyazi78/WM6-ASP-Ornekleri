@@ -1,4 +1,6 @@
-﻿using Admin.Models.IdentityModels;
+﻿using Admin.BLL.Helpers;
+using Admin.BLL.Services.Senders;
+using Admin.Models.IdentityModels;
 using Admin.Models.ViewModels;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
@@ -48,7 +50,8 @@ namespace Admin.Web.UI.Controllers
                     UserName = rm.UserName,
                     Email = rm.Email,
                     Name = rm.Name,
-                    Surname = rm.Surname
+                    Surname = rm.Surname,
+                    ActivationCode = StringHelpers.GetCode()
                 };
                 var result = await userManager.CreateAsync(newUser, rm.Password);
                 if (result.Succeeded)
@@ -61,7 +64,13 @@ namespace Admin.Web.UI.Controllers
                     {
                         await userManager.AddToRoleAsync(newUser.Id, "User");
                     }
-                    //todo kullanıcıya mail gönderilsin
+
+                    string SiteUrl = Request.Url.Scheme + System.Uri.SchemeDelimiter + Request.Url.Host +
+                                     (Request.Url.IsDefaultPort ? "" : ":" + Request.Url.Port);
+
+                    var emailService = new EmailService();
+                    var body = $"Merhaba <b>{newUser.Name} {newUser.Surname}</b><br>Hesabınızı aktif etmek için aşadıdaki linke tıklayınız<br> <a href='{SiteUrl}/account/activation?code={newUser.ActivationCode}' >Aktivasyon Linki </a> ";
+                    await emailService.SendAsync(new IdentityMessage() { Body = body, Subject = "Sitemize Hoşgeldiniz" }, newUser.Email);
                 }
                 else
                 {
@@ -133,7 +142,7 @@ namespace Admin.Web.UI.Controllers
         {
             var authManager = HttpContext.GetOwinContext().Authentication;
             authManager.SignOut();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Account");
         }
 
         [HttpGet]
