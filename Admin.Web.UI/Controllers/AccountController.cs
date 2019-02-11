@@ -1,8 +1,10 @@
 ﻿using Admin.BLL.Helpers;
+using Admin.BLL.Identity;
 using Admin.BLL.Services.Senders;
 using Admin.Models.IdentityModels;
 using Admin.Models.ViewModels;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System;
 using System.Collections.Generic;
@@ -15,11 +17,13 @@ using System.Web.Mvc;
 using static Admin.BLL.Identity.MembershipTools;
 namespace Admin.Web.UI.Controllers
 {
+    [RequireHttps]
     public class AccountController : Controller
     {
         // GET: Account
         public ActionResult Index()
         {
+            //HttpContext.User.Identity.GetUserId();
             if (HttpContext.GetOwinContext().Authentication.User.Identity.IsAuthenticated)
                 return RedirectToAction("Index", "Home");
             return View();
@@ -183,7 +187,6 @@ namespace Admin.Web.UI.Controllers
             }
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
@@ -227,7 +230,10 @@ namespace Admin.Web.UI.Controllers
                     img.Resize(250, 250, false);
                     img.AddTextWatermark("Wissen");
                     img.Save(dosyayolu);
+                    var oldPath = user.AvatarPath;
                     user.AvatarPath = "/Upload/" + fileName + extName;
+
+                    System.IO.File.Delete(Server.MapPath(oldPath));
                 }
 
 
@@ -347,12 +353,14 @@ namespace Admin.Web.UI.Controllers
 
             return View();
         }
+
         [HttpGet]
         [AllowAnonymous]
         public ActionResult RecoverPassword()
         {
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
@@ -403,6 +411,6 @@ namespace Admin.Web.UI.Controllers
             return View();
         }
 
-
+      
     }
 }
