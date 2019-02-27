@@ -1,0 +1,29 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html ng-app="myApp">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Products</title>
+    <script src="~/Scripts/angular.js"></script>
+    <script src="~/Scripts/app.js"></script>
+</head>
+<body>
+    <div class="main" ng-controller="ProductCtrl"> urunler
+        {{urunler}}
+        <form name="urunEkle">
+            <input type="text" placeholder="Urun Adi" ng-model="yeni.urunAdi" /><br />
+            <input type="number" placeholder="Urun Fiyatı" ng-model="yeni.fiyat" /><br />
+            <input type="button" value="Ekle" ng-click="ekle()" />
+        </form>
+    <br/>
+    <ul>
+        <li ng-repeat="item in urunler">{{item.urunAdi}}-{{item.fiyat}}</li>
+    </ul>
+    </div>
+</body>
+</html>

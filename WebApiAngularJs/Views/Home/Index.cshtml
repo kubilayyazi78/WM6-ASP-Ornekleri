@@ -11,12 +11,29 @@
     <title>Index</title>
     <script src="~/Scripts/angular.js"></script>
     <script>
-        var app = angular.module("myApp",[])
+        var app = angular.module("myApp", [])
+
+
+        app.controller("homeCtrl", function ($scope) {
+            $scope.toplam = 0;
+            $scope.kisiler = [];
+            $scope.yeniKisi = {};
+
+            $scope.topla = function () {
+                $scope.toplam = $scope.sayi1 + $scope.sayi2;
+            }
+        });
     </script>
 </head>
 <body>
-    <h2>{{2+2}}</h2>
-    <div> 
+    <div class="main" ng-controller="homeCtrl">
+        <input type="number" placeholder="Sayı 1" ng-model="sayi1" ng-change="topla()" /><br />
+        <input type="number" placeholder="Sayı 2" ng-model="sayi2" ng-change="topla()" /><br />
+
+        <span><strong>{{toplam}}</strong></span>
+
+    </div>
+    <div>
     </div>
 </body>
 </html>
