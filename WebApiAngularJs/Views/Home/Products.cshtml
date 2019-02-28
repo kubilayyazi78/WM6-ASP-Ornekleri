@@ -14,13 +14,22 @@
 <body>
     <div class="main" ng-controller="ProductCtrl">
         <form name="urunekle">
-            <input type="text" placeholder="Ürün Adı" ng-model="yeni.urunAdi" /><br />
-            <input type="number" placeholder="Fiyat" ng-model="yeni.fiyat" /><br />
-            <input type="button" value="Ekle" ng-click="ekle()" />
+            <input type="text" placeholder="Ürün Adı" ng-model="yeni.urunAdi" required minlength="3" name="urunAdi" /><br />
+            <label style=" color:Red" ng-show="!urunekle.urunAdi.$valid && urunekle.urunAdi.$dirty ">Lütfen En az 3 karakter giriniz</label><br />
+
+            <input type="number" placeholder="Fiyat" ng-model="yeni.fiyat" required min="0" max="999" name="fiyat" /><br />
+
+            <label style=" color:Red" ng-show="!urunekle.fiyat.$valid && urunekle.fiyat.$dirty">0 ile 999 arasında olmalı sayı</label><br />
+
+            <input type="button" value="Ekle" ng-click="ekle()" ng-show="urunekle.$valid" />
+
         </form>
         <br />
+        <input type="text" placeholder="Ara.."ng-model="txtara.urunAdi" />
         <ul>
-            <li ng-repeat="item in urunler track by item.id">{{item.urunAdi}} - {{item.fiyat}} ₺</li>
+            <li ng-repeat="item in urunler | filter:txtara track by item.id ">{{item.urunAdi}} - {{item.fiyat}} ₺
+            <input type="button" value="Sil"ng-click="sil(item.id)" />
+            </li>
         </ul>
     </div>
 </body>
