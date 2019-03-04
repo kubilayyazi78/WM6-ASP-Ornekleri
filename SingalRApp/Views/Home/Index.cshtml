@@ -3,45 +3,85 @@
 }
 
 <div class="jumbotron">
-    <h1>ASP.NET SingalR sohbete hoşgeldiniz </h1>
+    <h1>ASP.NET SignalR Sohbete Hoşgeldiniz</h1>
     <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
- 
 </div>
-
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12" id="logindiv">
+        <input type="text" id="username" placeholder="username" />
+        <input type="button" value="Login" id="btnlogin" />
+    </div>
+    <div class="col-md-6" id="chatdiv">
         <input type="text" id="message" />
-        <input type="button" id=" sendmessage"  value="Send"/>
-        <input type="hidden" id="displayname"/>
+        <input type="button" id="sendmessage" value="Send" />
+        <input type="hidden" id="displayname" />
         <ul id="discussion"></ul>
     </div>
+    <div class="col-md-6" id="onlineusers">
+        <ul id="onlinelist"></ul>
+    </div>
 </div>
-@section scripts{
 
-    <script src="~/Scripts/jquery.signalR-2.2.2.js"></script>
+
+@section scripts
+{
+
+
+    <script src="~/Scripts/jquery.signalR-2.4.0.js"></script>
     <script src="~/signalr/hubs"></script>
     <script>
-        
+        var userList = [];
+        $(function () {
+            $("#logindiv").show();
+            $("#chatdiv").hide();
+            $("#btnlogin").click(function () {
+                var username = $("#username").val();
+                if (username == "") return;
+                $("#displayname").val(username);
+                signalRHub.server.login(username, $.connection.hub.id);
+                $("#logindiv").hide();
+                $("#chatdiv").show();
+            });
+            var signalRHub = $.connection.chatHub;
+            var conId = null;
+            $.connection.hub.start().done(function () {
+                conId = $.connection.hub.id;
+                $("#sendmessage").click(function () {
+                    signalRHub.server.herkeseGonder($("#displayname").val(), $("#message").val());
+                });
+            });
+            signalRHub.client.herkeseGonder = function (gonderen, mesaj, tarih) {
+                $("<li></li>").html("<strong>" + gonderen + "</strong>: " + mesaj + "<i>" + tarih + "</i>")
+                    .appendTo("#discussion");
+            };
+            signalRHub.client.users = function (users) {
+                $("#onlinelist").empty();
+                userList = users;
+                $.each(users,
+                    function (key, item) {
+                        var li = $("<li></li>").html(item.UserName);
+                        $("<input />").attr("type", "button")
+                            .attr("value", "Özel Mesaj Gönder")
+                            .attr("name", item.Id)
+                            .on("click", function () {
+                                var aliciId = this.name;
+                                var ozelMesaj = prompt("Lütfen Mesajınızı Giriniz");
+                                signalRHub.server.ozelMesaj(conId, aliciId, ozelMesaj);
+                            })
+                            .appendTo($(li));
+                        li.attr("name", item.Id).appendTo("#onlinelist");
+                    });
+            }
+            signalRHub.client.mesajGeldi = function (gonderenId, mesaj) {
+                var gonderen = null;
+                for (var i = 0; i < userList.length; i++) {
+                    if (userList[i].Id == gonderenId) {
+                        gonderen = userList[i];
+                        break;
+                    }
+                }
+                alert(gonderen.UserName + ": " + mesaj);
+            }
+        });
     </script>
 }
-@*<div class="row">
-        <div class="col-md-4">
-            <h2>Getting started</h2>
-            <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
-            </p>
-            <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-        </div>
-        <div class="col-md-4">
-            <h2>Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-        </div>
-        <div class="col-md-4">
-            <h2>Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-        </div>
-    </div>*@
