@@ -1,15 +1,87 @@
 ﻿/// <reference path="angular.js" />
 
 var app = angular.module("myApp", ["dx"]);
-
+var host = "http://localhost:50896/"; 
 app.controller("testCtrl", function ($scope) {
 
     $scope.dataGridOptions = {
         dataSource: customers,
         columns: ["CompanyName", "City", "State", "Phone", "Fax"],
-        showBorders: true
+        showBorders: true,
+        searchPanel: {
+            visible: true,
+            width: 240,
+            placeholder: "Ara..."
+        }
     };
 
+});
+app.controller("customerCtrl", function ($scope, $http) {
+    $scope.data = null;
+    function init() {
+        $http({
+            url: host + 'api/customer/getall',
+            method: 'get'
+
+        }).then(function (ev) {
+            if (ev.data.success) {
+                $scope.data = ev.data.data;
+                loadGrid();
+            }
+
+        });
+    }
+    function loadGrid() {
+
+        $scope.dataGridOptions = {
+            dataSource: $scope.data,
+            selection: {
+                mode:"multiple"
+            },
+            onSectionChanged: function (selected) {
+                $scope.selected = selected.selectedRowsData;
+            },
+            "export": {
+                enabled: true,
+                fileName: "Customers_" + parseInt(Math.random() * 100000),
+                allowExportSelectedData: true
+            },
+            columnChooser: {
+                enabled: true,
+                allowSearch: true
+            },
+            columns: [
+                {
+                    dataField: "Id",
+                    caption: "Müşteri No",
+                    visible: false
+                }
+                , "Name", "Surname", "Phone", "Adress",
+                {
+                    dataField: "Balance",
+                    caption: "Balance",
+                    datType: "number",
+                    format:"#,##0.## ₺"
+                }
+            ],
+            showBorders: true,
+            paging: {
+                pagesize: 10
+            },
+            pager: {
+                showPageSizeSelector: true,
+                allowedPageSize:[5, 10, 50],
+                showInfo: true
+            },
+            searchPanel: {
+                visible: true,
+                width: 240,
+                placeholder: "Ara..."
+            }
+        };
+
+    }
+    init();
 });
 
 var customers = [{
