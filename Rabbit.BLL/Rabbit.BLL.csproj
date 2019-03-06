@@ -58,19 +58,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\Repository.cs" />
+    <Compile Include="Repository\RepositoryBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Admin.DAL\Admin.DAL.csproj">
-      <Project>{9e9f1f3a-825d-473f-95a9-0ae3e414608f}</Project>
-      <Name>Admin.DAL</Name>
+    <ProjectReference Include="..\Rabbit.DAL\Rabbit.DAL.csproj">
+      <Project>{3d7c7ca3-6171-4bee-ae26-932cd21d1f1b}</Project>
+      <Name>Rabbit.DAL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Admin.Models\Admin.Models.csproj">
-      <Project>{78c61b88-bbfd-4945-8c00-71124c3307bf}</Project>
-      <Name>Admin.Models</Name>
+    <ProjectReference Include="..\Rabbit.MODELS\Rabbit.MODELS.csproj">
+      <Project>{9b94fc08-1429-4d8a-ad4c-704886d1ffe1}</Project>
+      <Name>Rabbit.MODELS</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

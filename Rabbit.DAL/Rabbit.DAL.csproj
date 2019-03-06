@@ -48,6 +48,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Migrations\201903060857587_a.cs" />
+    <Compile Include="Migrations\201903060857587_a.Designer.cs">
+      <DependentUpon>201903060857587_a.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="MyContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -55,10 +61,15 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Admin.Models\Admin.Models.csproj">
-      <Project>{78c61b88-bbfd-4945-8c00-71124c3307bf}</Project>
-      <Name>Admin.Models</Name>
+    <ProjectReference Include="..\Rabbit.MODELS\Rabbit.MODELS.csproj">
+      <Project>{9b94fc08-1429-4d8a-ad4c-704886d1ffe1}</Project>
+      <Name>Rabbit.MODELS</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201903060857587_a.resx">
+      <DependentUpon>201903060857587_a.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
